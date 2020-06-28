@@ -115,7 +115,7 @@ public:
   void get_strategy(s::vector<double>& ret){
     int sum = s::accumulate(regret_sum, regret_sum + ACTION_MAX, 0);
     for (int i = 0; i < ACTION_MAX; ++i)
-      if (regret_sum[i] == 0)
+      if (regret_sum[i] <= 0)
         ret.push_back(1. / (double)ACTION_MAX);
       else
         ret.push_back((double)regret_sum[i] / (double)sum);
