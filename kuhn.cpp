@@ -156,6 +156,8 @@ class KhunGame {
     double probs[ACTION_MAX];
     value.strategy(probs, player == PLAYER1 ? p0 : p1);
     double utility[ACTION_MAX] = {0.};
+    //the expected utility of the info set
+    //v(I) = sum_a(pi(a) * v(I, a))
     double node_utility = 0.;
     for (unsigned a = 0; a < ACTION_MAX; ++a){
       history.push_back((ACTION)a);
@@ -166,8 +168,9 @@ class KhunGame {
       node_utility += probs[a] * utility[a];
     }
 
+    //counterfactual regret calculation
     for (unsigned a = 0; a < ACTION_MAX; ++a)
-      utility[a] = (utility[a] - node_utility) * (player == PLAYER1 ? p1 : p0);
+      utility[a] = (utility[a] - node_utility) * (player == PLAYER1 ? p1 : p0); //TODO: why this is the opposite player?
     value.update(utility);
 
     return node_utility;
